@@ -116,6 +116,35 @@ class Main {
 				foundArticle.setContent(content);
 				
 				System.out.printf("%d번 게시글이 수정되었습니다\n", foundArticle.getId());
+			} else if (cmd.startsWith("article delete ")) {
+				String[] cmdBits = cmd.split(" ");
+				
+				int id = -1;
+				
+				try {
+					id = Integer.parseInt(cmdBits[2]);
+				} catch (NumberFormatException e) {
+					System.out.println("게시글 번호를 정확하게 입력해주세요");
+					continue;
+				}
+				
+				Article foundArticle = null;
+				
+				for (Article article : articles) {
+					if (id == article.getId()) {
+						foundArticle = article;
+						break;
+					}
+				}
+				
+				if (foundArticle == null) {
+					System.out.printf("%d번 게시글이 존재하지 않습니다\n", id);
+					continue;
+				}
+				
+				articles.remove(foundArticle);
+				
+				System.out.printf("%d번 게시글이 삭제되었습니다\n", foundArticle.getId());
 			} else {
 				System.out.println("존재하지 않는 명령어 입니다");
 			}
