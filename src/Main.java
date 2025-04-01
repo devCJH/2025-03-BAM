@@ -33,7 +33,8 @@ class Main {
 				String content = sc.nextLine();
 				lastArticleId++;
 				
-				Article article = new Article(lastArticleId, title, content);
+				Article article = new Article(lastArticleId, Util.getDateStr(), title, content);
+				
 				articles.add(article);
 				
 				System.out.printf("%d번 게시글이 작성되었습니다\n", lastArticleId);
@@ -41,12 +42,12 @@ class Main {
 				if (articles.size() == 0) {
 					System.out.println("게시글이 존재하지 않습니다");
 					continue;
-				}
+				} 
 				
-				System.out.println("번호	|	제목");
+				System.out.println("번호	|	제목	|	작성일	");
 				for (int i = articles.size() - 1; i >= 0; i--) {
 					Article article = articles.get(i);
-					System.out.printf("%d	|	%s\n", article.id, article.title);
+					System.out.printf("%d	|	%s	|%s\n", article.id, article.title, article.regDate);
 				}
 			} else if (cmd.startsWith("article detail ")) {
 				String[] cmdBits = cmd.split(" ");
@@ -76,6 +77,7 @@ class Main {
 				
 				System.out.printf("== %d번 게시글 상세보기 ==\n", foundArticle.id);
 				System.out.printf("번호 : %d\n", foundArticle.id);
+				System.out.printf("작성일 : %s\n", foundArticle.regDate);
 				System.out.printf("제목 : %s\n", foundArticle.title);
 				System.out.printf("내용 : %s\n", foundArticle.content);
 			} else {
