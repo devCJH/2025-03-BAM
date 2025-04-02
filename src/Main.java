@@ -38,15 +38,35 @@ class Main {
 				articles.add(article);
 				
 				System.out.printf("%d번 게시글이 작성되었습니다\n", lastArticleId);
-			} else if (cmd.equals("article list")) {
+			} else if (cmd.startsWith("article list")) {
+				
 				if (articles.size() == 0) {
 					System.out.println("게시글이 존재하지 않습니다");
 					continue;
-				} 
+				}
+				
+				String searchKeyword = cmd.substring(12).trim();
+
+				List<Article> printArticles = articles;
+				
+				if (searchKeyword.length() > 0) {
+					printArticles = new ArrayList<>();
+					
+					for (Article article : articles) {
+						if (article.getTitle().contains(searchKeyword)) {
+							printArticles.add(article);
+						}
+					}
+					
+					if (printArticles.size() == 0) {
+						System.out.println("검색결과가 없습니다");
+						continue;
+					}
+				}
 				
 				System.out.println("번호	|	제목	|	작성일	");
-				for (int i = articles.size() - 1; i >= 0; i--) {
-					Article article = articles.get(i);
+				for (int i = printArticles.size() - 1; i >= 0; i--) {
+					Article article = printArticles.get(i);
 					System.out.printf("%d	|	%s	|%s\n", article.getId(), article.getTitle(), article.getRegDate());
 				}
 			} else if (cmd.startsWith("article detail ")) {
@@ -76,7 +96,6 @@ class Main {
 				}
 				
 				System.out.printf("== %d번 게시글 상세보기 ==\n", foundArticle.getId());
-				foundArticle.setId(11111);
 				System.out.printf("번호 : %d\n", foundArticle.getId());
 				System.out.printf("작성일 : %s\n", foundArticle.getRegDate());
 				System.out.printf("제목 : %s\n", foundArticle.getTitle());
