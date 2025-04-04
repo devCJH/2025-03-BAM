@@ -17,10 +17,6 @@ public class ArticleService {
 		return this.articleDao.writeArticle(regDate, title, content);
 	}
 
-	public List<Article> getArticles() {
-		return this.articleDao.getArticles();
-	}
-
 	public String getSearchKeywordByCmd(String cmd) {
 		return cmd.substring(12).trim();
 	}
@@ -28,5 +24,30 @@ public class ArticleService {
 	public List<Article> getPrintArticles(String searchKeyword) {
 		return this.articleDao.getPrintArticles(searchKeyword);
 	}
+	
+	public int getNumByCmd(String cmd) {
+		String[] cmdBits = cmd.split(" ");
 
+		try {
+			return Integer.parseInt(cmdBits[2]);
+		} catch (NumberFormatException e) {
+			return -1;
+		}
+	}
+	
+	public Article getArticleById(int id) {
+		return this.articleDao.getArticleById(id);
+	}
+
+	public void modifyArticle(Article foundArticle, String title, String content) {
+		this.articleDao.modifyArticle(foundArticle, title, content);
+	}
+
+	public void deleteArticle(Article foundArticle) {
+		this.articleDao.deleteArticle(foundArticle);
+	}
+
+	public void makeTestData() {
+		this.articleDao.makeTestData();
+	}
 }

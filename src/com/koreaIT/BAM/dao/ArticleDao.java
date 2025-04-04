@@ -22,10 +22,6 @@ public class ArticleDao {
 		return this.lastArticleId;
 	}
 
-	public List<Article> getArticles() {
-		return this.articles;
-	}
-
 	public List<Article> getPrintArticles(String searchKeyword) {
 		List<Article> printArticles = this.articles;
 
@@ -50,17 +46,28 @@ public class ArticleDao {
 		
 		return printArticles;
 	}
+
+	public Article getArticleById(int id) {
+		for (Article article : this.articles) {
+			if (id == article.getId()) {
+				return article;
+			}
+		}
+		return null;
+	}
+
+	public void modifyArticle(Article foundArticle, String title, String content) {
+		foundArticle.setTitle(title);
+		foundArticle.setContent(content);
+	}
+
+	public void deleteArticle(Article foundArticle) {
+		this.articles.remove(foundArticle);
+	}
+
+	public void makeTestData() {
+		for (int i = 1; i <= 5; i++) {
+			this.articles.add(new Article(++this.lastArticleId, Util.getDateStr(), "제목" + i, "내용" + i));
+		}
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
