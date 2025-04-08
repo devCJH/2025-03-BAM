@@ -1,6 +1,5 @@
 package com.koreaIT.BAM.service;
 
-import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dao.MemberDao;
 import com.koreaIT.BAM.dto.Member;
 
@@ -9,7 +8,7 @@ public class MemberService {
 	private MemberDao memberDao;
 	
 	public MemberService() {
-		this.memberDao = Container.memberDao;
+		this.memberDao = new MemberDao();
 	}
 	
 	public boolean isLoginIdDup(String loginId) {
@@ -32,8 +31,8 @@ public class MemberService {
 		memberDao.makeTestData();
 	}
 
-	public String getWriterNameByMemberId(int memberId) {
-		return memberDao.getWriterNameByMemberId(memberId);
-	}
+//	public String getWriterNameByMemberId(int memberId) {
+//		return memberDao.getWriterNameByMemberId(memberId);
+//	}
 
 }

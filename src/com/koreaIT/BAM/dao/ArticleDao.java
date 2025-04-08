@@ -3,19 +3,21 @@ package com.koreaIT.BAM.dao;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.koreaIT.BAM.db.InsteadDB;
 import com.koreaIT.BAM.dto.Article;
+import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.util.Util;
 
 public class ArticleDao {
-
+	
 	private int lastArticleId;
 	private List<Article> articles;
 	
 	public ArticleDao() {
-		this.lastArticleId = 0;
-		this.articles = new ArrayList<>();
+		this.lastArticleId = InsteadDB.lastArticleId;
+		this.articles = InsteadDB.articles;
 	}
-
+	
 	public int writeArticle(String regDate, int loginedMemberId, String title, String content) {
 		Article article = new Article(++this.lastArticleId, Util.getDateStr(), loginedMemberId, title, content);
 		this.articles.add(article);
@@ -69,5 +71,14 @@ public class ArticleDao {
 		for (int i = 1; i <= 5; i++) {
 			this.articles.add(new Article(++this.lastArticleId, Util.getDateStr(), (int) (Math.random() * 3 + 1), "제목" + i, "내용" + i));
 		}
+	}
+
+	public String getWriterNameByMemberId(int memberId) {
+		for (Member member : InsteadDB.members) {
+			if (memberId == member.getId()) {
+				return member.getLoginId();
+			}
+		}
+		return null;
 	}
 }

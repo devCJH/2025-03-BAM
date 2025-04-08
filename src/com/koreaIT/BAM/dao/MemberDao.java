@@ -1,19 +1,19 @@
 package com.koreaIT.BAM.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import com.koreaIT.BAM.db.InsteadDB;
 import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.util.Util;
 
 public class MemberDao {
-
+	
 	private int lastMemberId;
 	private List<Member> members;
 	
 	public MemberDao() {
-		this.lastMemberId = 0;
-		this.members = new ArrayList<>();
+		this.lastMemberId = InsteadDB.lastMemberId;
+		this.members = InsteadDB.members;
 	}
 	
 	public boolean isLoginIdDup(String loginId) {
@@ -56,14 +56,14 @@ public class MemberDao {
 		}
 	}
 
-	public String getWriterNameByMemberId(int memberId) {
-		for (Member member : members) {
-			if (memberId == member.getId()) {
-				return member.getLoginId();
-			}
-		}
-		return null;
-	}
+//	public String getWriterNameByMemberId(int memberId) {
+//		for (Member member : members) {
+//			if (memberId == member.getId()) {
+//				return member.getLoginId();
+//			}
+//		}
+//		return null;
+//	}
 }
 
 

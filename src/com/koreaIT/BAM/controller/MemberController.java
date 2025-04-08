@@ -2,24 +2,29 @@ package com.koreaIT.BAM.controller;
 
 import java.util.Scanner;
 
-import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.service.MemberService;
+import com.koreaIT.BAM.session.Session;
 import com.koreaIT.BAM.util.Util;
 
 public class MemberController {
 
 	private MemberService memberService;
 	private Scanner sc;
-	public static int loginedMemberId;
+	private int loginedMemberId;
 	
 	public MemberController(Scanner sc) {
-		this.memberService = Container.memberService;
+		this.memberService = new MemberService();
 		this.sc = sc;
-		loginedMemberId = -1;
+		this.loginedMemberId = Session.loginedMemberId;
 	}
 	
 	public void doJoin() {
+		if (this.loginedMemberId != -1) {
+			System.out.println("로그아웃 후 이용해주세요");
+			return;
+		}
+		
 		String loginId = null;
 		String loginPw = null;
 		String name = null;
@@ -82,7 +87,7 @@ public class MemberController {
 	}
 
 	public void doLogin() {
-		if (loginedMemberId != -1) {
+		if (this.loginedMemberId != -1) {
 			System.out.println("로그아웃 후 이용해주세요");
 			return;
 		}
@@ -104,7 +109,7 @@ public class MemberController {
 			return;
 		}
 		
-		loginedMemberId = member.getId();
+		this.loginedMemberId = member.getId();
 		
 		System.out.printf("[ %s ] 님 환영합니다~\n", member.getName());
 	}
@@ -133,12 +138,12 @@ public class MemberController {
 //	}
 
 	public void doLogout() {
-		if (loginedMemberId == -1) {
+		if (this.loginedMemberId == -1) {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
 		
-		loginedMemberId = -1;
+		this.loginedMemberId = -1;
 		System.out.println("정상적으로 로그아웃 되었습니다");
 	}
 

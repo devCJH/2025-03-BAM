@@ -3,26 +3,25 @@ package com.koreaIT.BAM.controller;
 import java.util.List;
 import java.util.Scanner;
 
-import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dto.Article;
 import com.koreaIT.BAM.service.ArticleService;
-import com.koreaIT.BAM.service.MemberService;
+import com.koreaIT.BAM.session.Session;
 import com.koreaIT.BAM.util.Util;
 
 public class ArticleController {
 
 	private ArticleService articleService;
-	private MemberService memberService;
 	private Scanner sc;
+	private int loginedMemberId;
 	
 	public ArticleController(Scanner sc) {
-		this.articleService = Container.articleService;
-		this.memberService = Container.memberService;
+		this.articleService = new ArticleService();
 		this.sc = sc;
+		this.loginedMemberId = Session.loginedMemberId;
 	}
 
 	public void doWrite() {
-		if (MemberController.loginedMemberId == -1) {
+		if (this.loginedMemberId == -1) {
 			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
 			return;
 		}
@@ -32,7 +31,7 @@ public class ArticleController {
 		System.out.printf("내용 : ");
 		String content = sc.nextLine();
 		
-		int id = this.articleService.writeArticle(Util.getDateStr(), MemberController.loginedMemberId, title, content);
+		int id = this.articleService.writeArticle(Util.getDateStr(), this.loginedMemberId, title, content);
 
 		System.out.printf("%d번 게시글이 작성되었습니다\n", id);		
 	}
@@ -60,7 +59,7 @@ public class ArticleController {
 		for (int i = printArticles.size() - 1; i >= 0; i--) {
 			Article article = printArticles.get(i);
 			
-			String writerName = memberService.getWriterNameByMemberId(article.getMemberId());
+			String writerName = articleService.getWriterNameByMemberId(article.getMemberId());
 			
 			System.out.printf("%d	|	%s	|	%s	|%s\n", article.getId(), article.getTitle(), writerName, article.getRegDate());
 		}
@@ -81,7 +80,7 @@ public class ArticleController {
 			return;
 		}
 
-		String writerName = memberService.getWriterNameByMemberId(foundArticle.getMemberId());
+		String writerName = articleService.getWriterNameByMemberId(foundArticle.getMemberId());
 		
 		System.out.printf("== %d번 게시글 상세보기 ==\n", foundArticle.getId());
 		System.out.printf("번호 : %d\n", foundArticle.getId());

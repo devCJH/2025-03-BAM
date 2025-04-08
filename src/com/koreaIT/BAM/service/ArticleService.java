@@ -2,7 +2,6 @@ package com.koreaIT.BAM.service;
 
 import java.util.List;
 
-import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dao.ArticleDao;
 import com.koreaIT.BAM.dto.Article;
 
@@ -11,7 +10,7 @@ public class ArticleService {
 	private ArticleDao articleDao;
 	
 	public ArticleService() {
-		this.articleDao = Container.articleDao;
+		this.articleDao = new ArticleDao();
 	}
 
 	public int writeArticle(String regDate, int loginedMemberId, String title, String content) {
@@ -50,5 +49,9 @@ public class ArticleService {
 
 	public void makeTestData() {
 		this.articleDao.makeTestData();
+	}
+
+	public String getWriterNameByMemberId(int memberId) {
+		return this.articleDao.getWriterNameByMemberId(memberId);
 	}
 }
