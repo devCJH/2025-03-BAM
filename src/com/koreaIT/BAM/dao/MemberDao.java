@@ -32,15 +32,6 @@ public class MemberDao {
 		return this.lastMemberId;
 	}
 
-//	public Member getMemberByLoginIdAndPw(String loginId, String loginPw) {
-//		for (Member member : members) {
-//			if (member.getLoginId().equals(loginId) && member.getLoginPw().equals(loginPw)) {
-//				return member;
-//			}
-//		}
-//		return null;
-//	}
-
 	public Member getMemberByLoginId(String loginId) {
 		for (Member member : members) {
 			if (member.getLoginId().equals(loginId)) {
@@ -55,15 +46,6 @@ public class MemberDao {
 			this.members.add(new Member(++this.lastMemberId, Util.getDateStr(), "test" + i, "test" + i, "유저" + i));
 		}
 	}
-
-//	public String getWriterNameByMemberId(int memberId) {
-//		for (Member member : members) {
-//			if (memberId == member.getId()) {
-//				return member.getLoginId();
-//			}
-//		}
-//		return null;
-//	}
 }
 
 

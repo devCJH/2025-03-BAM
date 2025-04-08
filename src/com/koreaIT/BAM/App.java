@@ -3,7 +3,9 @@ package com.koreaIT.BAM;
 import java.util.Scanner;
 
 import com.koreaIT.BAM.controller.ArticleController;
+import com.koreaIT.BAM.controller.Controller;
 import com.koreaIT.BAM.controller.MemberController;
+import com.koreaIT.BAM.session.Session;
 
 public class App {
 	public void run() {
@@ -30,25 +32,47 @@ public class App {
 				continue;
 			}
 			
-			if (cmd.equals("member join")) {
-				memberController.doJoin();
-			} else if (cmd.equals("member login")) {
-				memberController.doLogin();
-			} else if (cmd.equals("member logout")) {
-				memberController.doLogout();
-			} else if (cmd.equals("article write")) {
-				articleController.doWrite();
-			} else if (cmd.startsWith("article list")) {
-				articleController.showList(cmd);
-			} else if (cmd.startsWith("article detail ")) {
-				articleController.showDetail(cmd);
-			} else if (cmd.startsWith("article modify ")) {
-				articleController.doModify(cmd);
-			} else if (cmd.startsWith("article delete ")) {
-				articleController.doDelete(cmd);
+			String[] cmdBits = cmd.split(" ");
+			
+			if (cmdBits.length < 2) {
+				System.out.println("존재하지 않는 명령어 입니다");
+				continue;
+			}
+			
+			String controllerName = cmdBits[0];
+			String methodName = cmdBits[1];
+			
+			switch (controllerName + "/" + methodName) {
+			case "member/logout":
+			case "article/write":
+			case "article/modify":
+			case "article/delete":
+				if (Session.isLogined() == false) {
+					System.out.println("로그인 후 이용해주세요");
+					continue;
+				}
+				break;
+			case "member/join":
+			case "member/login":
+				if (Session.isLogined()) {
+					System.out.println("로그아웃 후 이용해주세요");
+					continue;
+				}
+				break;
+			}
+			
+			Controller controller = null;
+			
+			if (controllerName.equals("member")) {
+				controller = memberController;
+			} else if (controllerName.equals("article")) {
+				controller = articleController;
 			} else {
 				System.out.println("존재하지 않는 명령어 입니다");
+				continue;
 			}
+			
+			controller.doAction(methodName, cmd);
 		}
 
 		System.out.println("== 프로그램 종료 ==");

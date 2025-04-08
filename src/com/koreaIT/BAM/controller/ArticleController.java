@@ -8,22 +8,42 @@ import com.koreaIT.BAM.service.ArticleService;
 import com.koreaIT.BAM.session.Session;
 import com.koreaIT.BAM.util.Util;
 
-public class ArticleController {
+public class ArticleController extends Controller {
 
 	private ArticleService articleService;
-	private Scanner sc;
 	
 	public ArticleController(Scanner sc) {
 		this.articleService = new ArticleService();
 		this.sc = sc;
 	}
 
-	public void doWrite() {
-		if (Session.isLogined() == false) {
-			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
-			return;
-		}
+	@Override
+	public void doAction(String methodName, String cmd) {
+		this.cmd = cmd;
 		
+		switch (methodName) {
+		case "write":
+			doWrite();
+			break;
+		case "list":
+			showList();
+			break;
+		case "detail":
+			showDetail();
+			break;
+		case "modify":
+			doModify();
+			break;
+		case "delete":
+			doDelete();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어 입니다");
+			break;
+		}
+	}
+
+	public void doWrite() {
 		System.out.printf("제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("내용 : ");
@@ -34,7 +54,7 @@ public class ArticleController {
 		System.out.printf("%d번 게시글이 작성되었습니다\n", id);		
 	}
 
-	public void showList(String cmd) {
+	public void showList() {
 		String searchKeyword = this.articleService.getSearchKeywordByCmd(cmd);
 		List<Article> printArticles = this.articleService.getPrintArticles(searchKeyword);
 
@@ -63,7 +83,7 @@ public class ArticleController {
 		}
 	}
 
-	public void showDetail(String cmd) {
+	public void showDetail() {
 		int id = this.articleService.getNumByCmd(cmd);
 
 		if (id == -1) {
@@ -88,12 +108,7 @@ public class ArticleController {
 		System.out.printf("내용 : %s\n", foundArticle.getContent());
 	}
 
-	public void doModify(String cmd) {
-		if (Session.isLogined() == false) {
-			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
-			return;
-		}
-		
+	public void doModify() {
 		int id = this.articleService.getNumByCmd(cmd);
 
 		if (id == -1) {
@@ -123,12 +138,7 @@ public class ArticleController {
 		System.out.printf("%d번 게시글이 수정되었습니다\n", foundArticle.getId());
 	}
 
-	public void doDelete(String cmd) {
-		if (Session.isLogined() == false) {
-			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
-			return;
-		}
-		
+	public void doDelete() {
 		int id = this.articleService.getNumByCmd(cmd);
 
 		if (id == -1) {
@@ -153,6 +163,7 @@ public class ArticleController {
 		System.out.printf("%d번 게시글이 삭제되었습니다\n", foundArticle.getId());
 	}
 
+	@Override
 	public void makeTestData() {
 		System.out.println("테스트용 게시글 데이터 5개를 생성했습니다");
 		this.articleService.makeTestData();

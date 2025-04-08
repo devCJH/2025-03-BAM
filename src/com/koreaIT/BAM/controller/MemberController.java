@@ -7,22 +7,34 @@ import com.koreaIT.BAM.service.MemberService;
 import com.koreaIT.BAM.session.Session;
 import com.koreaIT.BAM.util.Util;
 
-public class MemberController {
+public class MemberController extends Controller {
 
 	private MemberService memberService;
-	private Scanner sc;
 	
 	public MemberController(Scanner sc) {
 		this.memberService = new MemberService();
 		this.sc = sc;
 	}
 	
-	public void doJoin() {
-		if (Session.isLogined()) {
-			System.out.println("로그아웃 후 이용해주세요");
-			return;
+	@Override
+	public void doAction(String methodName, String cmd) {
+		switch (methodName) {
+		case "join":
+			doJoin();
+			break;
+		case "login":
+			doLogin();
+			break;
+		case "logout":
+			doLogout();
+			break;
+		default:
+			System.out.println("존재하지 않는 명령어 입니다");
+			break;
 		}
-		
+	}
+	
+	private void doJoin() {
 		String loginId = null;
 		String loginPw = null;
 		String name = null;
@@ -85,11 +97,6 @@ public class MemberController {
 	}
 
 	public void doLogin() {
-		if (Session.isLogined()) {
-			System.out.println("로그아웃 후 이용해주세요");
-			return;
-		}
-		
 		System.out.printf("아이디 : ");
 		String loginId = sc.nextLine().trim();
 		System.out.printf("비밀번호 : ");
@@ -111,61 +118,15 @@ public class MemberController {
 		
 		System.out.printf("[ %s ] 님 환영합니다~\n", member.getName());
 	}
-	
-//	public void doLogin() {
-//		if (this.loginedMemberId != -1) {
-//			System.out.println("로그아웃 후 이용해주세요");
-//			return;
-//		}
-//		
-//		System.out.printf("아이디 : ");
-//		String loginId = sc.nextLine().trim();
-//		System.out.printf("비밀번호 : ");
-//		String loginPw = sc.nextLine().trim();
-//		
-//		Member member = this.memberService.getMemberByLoginIdAndPw(loginId, loginPw);
-//		
-//		if (member == null) {
-//			System.out.println("아이디 or 비밀번호가 잘못되었습니다");
-//			return;
-//		}
-//		
-//		this.loginedMemberId = member.getId();
-//		
-//		System.out.printf("[ %s ] 님 환영합니다~\n", member.getName());
-//	}
 
 	public void doLogout() {
-		if (Session.isLogined() == false) {
-			System.out.println("로그인 후 이용해주세요");
-			return;
-		}
-		
 		Session.loginedMemberId = -1;
 		System.out.println("정상적으로 로그아웃 되었습니다");
 	}
 
+	@Override
 	public void makeTestData() {
 		System.out.println("테스트용 회원 데이터 3개를 생성했습니다");
 		this.memberService.makeTestData();
 	}
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

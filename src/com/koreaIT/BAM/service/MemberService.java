@@ -19,10 +19,6 @@ public class MemberService {
 		return memberDao.joinMember(regDate, loginId, loginPw, name);
 	}
 
-//	public Member getMemberByLoginIdAndPw(String loginId, String loginPw) {
-//		return memberDao.getMemberByLoginIdAndPw(loginId, loginPw);
-//	}
-
 	public Member getMemberByLoginId(String loginId) {
 		return memberDao.getMemberByLoginId(loginId);
 	}
@@ -30,9 +26,4 @@ public class MemberService {
 	public void makeTestData() {
 		memberDao.makeTestData();
 	}
-
-//	public String getWriterNameByMemberId(int memberId) {
-//		return memberDao.getWriterNameByMemberId(memberId);
-//	}
-
 }
