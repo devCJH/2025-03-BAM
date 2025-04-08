@@ -2,6 +2,7 @@ package com.koreaIT.BAM.controller;
 
 import java.util.Scanner;
 
+import com.koreaIT.BAM.container.Container;
 import com.koreaIT.BAM.dto.Member;
 import com.koreaIT.BAM.service.MemberService;
 import com.koreaIT.BAM.util.Util;
@@ -10,12 +11,12 @@ public class MemberController {
 
 	private MemberService memberService;
 	private Scanner sc;
-	private int loginedMemberId;
+	public static int loginedMemberId;
 	
 	public MemberController(Scanner sc) {
-		this.memberService = new MemberService();
+		this.memberService = Container.memberService;
 		this.sc = sc;
-		this.loginedMemberId = -1;
+		loginedMemberId = -1;
 	}
 	
 	public void doJoin() {
@@ -81,7 +82,7 @@ public class MemberController {
 	}
 
 	public void doLogin() {
-		if (this.loginedMemberId != -1) {
+		if (loginedMemberId != -1) {
 			System.out.println("로그아웃 후 이용해주세요");
 			return;
 		}
@@ -103,7 +104,7 @@ public class MemberController {
 			return;
 		}
 		
-		this.loginedMemberId = member.getId();
+		loginedMemberId = member.getId();
 		
 		System.out.printf("[ %s ] 님 환영합니다~\n", member.getName());
 	}
@@ -132,13 +133,18 @@ public class MemberController {
 //	}
 
 	public void doLogout() {
-		if (this.loginedMemberId == -1) {
+		if (loginedMemberId == -1) {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
 		
-		this.loginedMemberId = -1;
+		loginedMemberId = -1;
 		System.out.println("정상적으로 로그아웃 되었습니다");
+	}
+
+	public void makeTestData() {
+		System.out.println("테스트용 회원 데이터 3개를 생성했습니다");
+		this.memberService.makeTestData();
 	}
 
 }

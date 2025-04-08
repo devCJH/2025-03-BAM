@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.koreaIT.BAM.dto.Member;
+import com.koreaIT.BAM.util.Util;
 
 public class MemberDao {
 
@@ -48,13 +49,22 @@ public class MemberDao {
 		}
 		return null;
 	}
+	
+	public void makeTestData() {
+		for (int i = 1; i <= 3; i++) {
+			this.members.add(new Member(++this.lastMemberId, Util.getDateStr(), "test" + i, "test" + i, "유저" + i));
+		}
+	}
+
+	public String getWriterNameByMemberId(int memberId) {
+		for (Member member : members) {
+			if (memberId == member.getId()) {
+				return member.getLoginId();
+			}
+		}
+		return null;
+	}
 }
-
-
-
-
-
-
 
 
 
