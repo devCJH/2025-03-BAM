@@ -12,16 +12,14 @@ public class ArticleController {
 
 	private ArticleService articleService;
 	private Scanner sc;
-	private int loginedMemberId;
 	
 	public ArticleController(Scanner sc) {
 		this.articleService = new ArticleService();
 		this.sc = sc;
-		this.loginedMemberId = Session.loginedMemberId;
 	}
 
 	public void doWrite() {
-		if (this.loginedMemberId == -1) {
+		if (Session.isLogined() == false) {
 			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
 			return;
 		}
@@ -31,7 +29,7 @@ public class ArticleController {
 		System.out.printf("내용 : ");
 		String content = sc.nextLine();
 		
-		int id = this.articleService.writeArticle(Util.getDateStr(), this.loginedMemberId, title, content);
+		int id = this.articleService.writeArticle(Util.getDateStr(), Session.loginedMemberId, title, content);
 
 		System.out.printf("%d번 게시글이 작성되었습니다\n", id);		
 	}

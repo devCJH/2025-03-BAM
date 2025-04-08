@@ -11,16 +11,14 @@ public class MemberController {
 
 	private MemberService memberService;
 	private Scanner sc;
-	private int loginedMemberId;
 	
 	public MemberController(Scanner sc) {
 		this.memberService = new MemberService();
 		this.sc = sc;
-		this.loginedMemberId = Session.loginedMemberId;
 	}
 	
 	public void doJoin() {
-		if (this.loginedMemberId != -1) {
+		if (Session.isLogined()) {
 			System.out.println("로그아웃 후 이용해주세요");
 			return;
 		}
@@ -87,7 +85,7 @@ public class MemberController {
 	}
 
 	public void doLogin() {
-		if (this.loginedMemberId != -1) {
+		if (Session.isLogined()) {
 			System.out.println("로그아웃 후 이용해주세요");
 			return;
 		}
@@ -109,7 +107,7 @@ public class MemberController {
 			return;
 		}
 		
-		this.loginedMemberId = member.getId();
+		Session.loginedMemberId = member.getId();
 		
 		System.out.printf("[ %s ] 님 환영합니다~\n", member.getName());
 	}
@@ -138,12 +136,12 @@ public class MemberController {
 //	}
 
 	public void doLogout() {
-		if (this.loginedMemberId == -1) {
+		if (Session.isLogined() == false) {
 			System.out.println("로그인 후 이용해주세요");
 			return;
 		}
 		
-		this.loginedMemberId = -1;
+		Session.loginedMemberId = -1;
 		System.out.println("정상적으로 로그아웃 되었습니다");
 	}
 

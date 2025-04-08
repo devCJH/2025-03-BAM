@@ -6,4 +6,8 @@ public class Session {
 	static {
 		loginedMemberId = -1;
 	}
+	
+	public static boolean isLogined() {
+		return loginedMemberId != -1;
+	}
 }
