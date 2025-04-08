@@ -89,6 +89,11 @@ public class ArticleController {
 	}
 
 	public void doModify(String cmd) {
+		if (Session.isLogined() == false) {
+			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
+			return;
+		}
+		
 		int id = this.articleService.getNumByCmd(cmd);
 
 		if (id == -1) {
@@ -103,6 +108,11 @@ public class ArticleController {
 			return;
 		}
 
+		if (Session.loginedMemberId != foundArticle.getMemberId()) {
+			System.out.println("해당 게시물에 대한 권한이 없습니다");
+			return;
+		}
+		
 		System.out.printf("수정할 제목 : ");
 		String title = sc.nextLine();
 		System.out.printf("수정할 내용 : ");
@@ -114,6 +124,11 @@ public class ArticleController {
 	}
 
 	public void doDelete(String cmd) {
+		if (Session.isLogined() == false) {
+			System.out.println("로그인을 해야만 사용할 수 있는 기능입니다");
+			return;
+		}
+		
 		int id = this.articleService.getNumByCmd(cmd);
 
 		if (id == -1) {
@@ -128,6 +143,11 @@ public class ArticleController {
 			return;
 		}
 
+		if (Session.loginedMemberId != foundArticle.getMemberId()) {
+			System.out.println("해당 게시물에 대한 권한이 없습니다");
+			return;
+		}
+		
 		this.articleService.deleteArticle(foundArticle);
 
 		System.out.printf("%d번 게시글이 삭제되었습니다\n", foundArticle.getId());
