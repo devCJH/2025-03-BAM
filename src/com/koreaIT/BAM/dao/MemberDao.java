@@ -30,6 +30,24 @@ public class MemberDao {
 		
 		return this.lastMemberId;
 	}
+
+//	public Member getMemberByLoginIdAndPw(String loginId, String loginPw) {
+//		for (Member member : members) {
+//			if (member.getLoginId().equals(loginId) && member.getLoginPw().equals(loginPw)) {
+//				return member;
+//			}
+//		}
+//		return null;
+//	}
+
+	public Member getMemberByLoginId(String loginId) {
+		for (Member member : members) {
+			if (member.getLoginId().equals(loginId)) {
+				return member;
+			}
+		}
+		return null;
+	}
 }
 
 

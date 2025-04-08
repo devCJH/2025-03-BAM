@@ -1,6 +1,7 @@
 package com.koreaIT.BAM.service;
 
 import com.koreaIT.BAM.dao.MemberDao;
+import com.koreaIT.BAM.dto.Member;
 
 public class MemberService {
 
@@ -16,6 +17,14 @@ public class MemberService {
 
 	public int joinMember(String regDate, String loginId, String loginPw, String name) {
 		return memberDao.joinMember(regDate, loginId, loginPw, name);
+	}
+
+//	public Member getMemberByLoginIdAndPw(String loginId, String loginPw) {
+//		return memberDao.getMemberByLoginIdAndPw(loginId, loginPw);
+//	}
+
+	public Member getMemberByLoginId(String loginId) {
+		return memberDao.getMemberByLoginId(loginId);
 	}
 
 }
